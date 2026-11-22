@@ -21,10 +21,10 @@ distributable {
   url              = "https://github.com/fastfloat/fast_float/archive/refs/tags/v{{version.raw}}.tar.gz"
   strip-components = 1
 
-  # 156846 bytes, `zpkb sourcepin`; second fetch through codeload.github.com
+  # 159371 bytes, `zpkb sourcepin`; second fetch through codeload.github.com
   # gave the same digest.
   sha256 = {
-    "8.3.3" = "4dd695f051893c8218faf2ed9871fa4a4990aa6aee2d3190ed7bfa2e83092245"
+    "8.4.0" = "0bf4277827259720028bbef6c11d400f07482608bea5952b289baaef6af141a4"
   }
 }
 
