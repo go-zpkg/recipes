@@ -25,7 +25,7 @@ distributable {
   # Fetched with `zpkb sourcepin`, and byte-identical to the sha256 PyPI's simple
   # index (pypi.org/simple/filelock/) records for the sdist.
   sha256 = {
-    "4.2.12" = "7e7da24d3ac39268b0f156e56870001de44886318f092f9d851e692f7114d6dd"
+    "4.3.0" = "143407310acf479e82d88068e3b9a6486f45fb410c0ed8729fe7359eaabeb6f1"
   }
 }
 
