@@ -6,17 +6,21 @@
 # ⛔ WRITTEN FROM libmicrohttpd's configure.ac at 1.0.11. NOT BUILT: builds are
 # suspended by a security hold; what is established is the inputs.
 #
+# HTTPS is ON, through GnuTLS (gnutls.org recipe, go-zpkg/recipes#350):
+#   --enable-https (configure.ac:3593-3597, default `auto`) and
+#   --with-gnutls=yes (:3616-3618, "automatically, forced"): GnuTLS is then
+#   found by pkg-config (:3650), and a missing or unusable one is a hard error
+#   (:3740-3741) instead of a silent fall back to libgcrypt (:3707) or to a
+#   plain-HTTP build. systemd-journal-remote and journal-gatewayd can then
+#   serve TLS.
+#
 # WHAT IS OFF, with the reason:
-#   HTTPS (--enable-https, configure.ac:3593-3597, default `auto`): it needs
-#       GnuTLS (:3602-3705) or, failing that, libgcrypt (:3707). No gnutls
-#       recipe exists in this tree, and `auto` would take whatever the host
-#       carries, so it is OFF (--disable-https): a plain-HTTP libmicrohttpd.
-#       systemd-journal-remote then serves HTTP only.
+#   Nothing of HTTPS: it is ON (below).
 #   --disable-doc, --disable-examples, --disable-tools (:2215-2231): defaults ON;
 #       the examples and tools need libcurl and are not installed products.
 #   --disable-curl (:3277): `curl` only enables test programs that link libcurl.
 
-summary = "GNU libmicrohttpd: embeddable HTTP server library (plain HTTP)"
+summary = "GNU libmicrohttpd: embeddable HTTP server library (HTTP and HTTPS)"
 
 license = "LGPL-2.1-or-later"
 
@@ -38,6 +42,10 @@ distributable {
   }
 }
 
+dependencies = {
+  "gnutls.org" = "3"
+}
+
 build {
   dependencies = {
     "gnu.org/make"               = "*"
@@ -49,14 +57,16 @@ build {
     ARGS = [
       "--prefix={{prefix}}",
       "--libdir={{prefix}}/lib",
-      "--disable-https",
+      "--enable-https",
+      "--with-gnutls=yes",
       "--disable-doc",
       "--disable-examples",
       "--disable-tools",
       "--disable-curl",
       "--disable-static",
     ]
-    LDFLAGS = "-Wl,-rpath,{{prefix}}/lib"
+    PKG_CONFIG_PATH = "{{deps.gnutls.org.prefix}}/lib/pkgconfig"
+    LDFLAGS         = "-Wl,-rpath,{{prefix}}/lib -Wl,-rpath,{{deps.gnutls.org.prefix}}/lib"
   }
 
   script = [
@@ -71,8 +81,7 @@ test {
     "test -f \"{{prefix}}/include/microhttpd.h\"",
     "test -f \"{{prefix}}/lib/pkgconfig/libmicrohttpd.pc\"",
     "grep -q '^Version: {{version.raw}}' \"{{prefix}}/lib/pkgconfig/libmicrohttpd.pc\"",
-    "test -e \"{{prefix}}/lib/libmicrohttpd.so\"",
-  ]
+    "test -e \"{{prefix}}/lib/libmicrohttpd.so\"",  ]
 }
 
 provenance {
@@ -93,7 +102,9 @@ provenance {
 fingerprint was used; trust rests on the key carrying the maintainer's user ID
 as the keyserver holds it.
 
-⛔ NOT BUILT. Unverified: that each --disable-* spelling is accepted verbatim
+⛔ NOT BUILT. Unverified: that the built library names GnuTLS (no test line
+asserts it: what the .pc or the NEEDED line carries was not read off an
+artifact); that each --disable-* spelling is accepted verbatim
 (read from configure.ac AC_ARG_ENABLE names, not run); that the `versions`
 regex resolves against the listing (copied from the libidn2 recipe's form).
 EOT
