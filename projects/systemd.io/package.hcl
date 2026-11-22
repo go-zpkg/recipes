@@ -9,9 +9,19 @@
 # ⛔ NOT AN INSTALL FOR A LIVE HOST. Built into a store prefix, the manager,
 # udev and the units are INERT there: a system's init is the host's. What the
 # recipe provides is the command-line tools and libsystemd/libudev, for
-# whatever links or drives them. The sysconfdir and localstatedir are therefore
-# PREFIX-RELATIVE (meson.build:133 joins the prefix with `sysconfdir`, whose
-# default `/etc` is absolute and would send the install to the host's /etc).
+# whatever links or drives them. The sysconfdir is therefore PREFIX-RELATIVE
+# (meson.build:133 joins the prefix with `sysconfdir`, whose default `/etc` is
+# absolute and would send the install to the host's /etc).
+#
+# ⛔ THE LOCALSTATEDIR IS NOT. meson.build:136 reads it as
+# `localstatedir = '/' / get_option('localstatedir')`, so `--localstatedir=var`
+# means the ABSOLUTE `/var`, whatever the prefix. This header used to say both
+# were prefix-relative; for localstatedir that was wrong. It is latent, not an
+# install escape: localstatedir feeds only compiled-in run-time paths
+# (systemdstatedir, randomseeddir, the catalog database) and the one install
+# into it, polkitpkladir, happens only when polkit < 0.106 is found
+# (src/network/meson.build:284). The only write to /var at install time would
+# be create-log-dirs, which stays false below.
 #
 # ⛔⛔ EVERY OPTION IN meson_options.txt THAT DETECTS OR CHOOSES, STATED. The
 # `feature` options are `auto` by default and silently link whatever the
@@ -29,30 +39,78 @@
 #     zlib, bzip2, xz, lz4, zstd (:476-484)   compression of the journal
 #     pcre2 (:490)     pcre.org/v2 (:1453)
 #     nspawn (:191)    needs no library
+#     acl (:426)       savannah.nongnu.org/acl (+ attr), `libacl` (meson.build:1161)
+#     libcurl (:452)   curl.se (:1248), which also gates imds (:145) and
+#                      importd (:183): meson.build:1564-1575
+#     imds (:145), importd (:183)   curl, openssl, zlib, xz, all declared
+#     sysupdate (:105) importd, openssl, fdisk (meson.build:1578-1583);
+#     sysupdated (:107) = enabled: `auto` is on only in developer mode
+#                      (meson.build:1585-1597), `enabled` errors if sysupdate
+#                      is off, so it cannot silently drop out
+#     repart (:103)    fdisk (meson.build:1550-1552)
+#     libidn2 (:456), idn (:454)   gnu.org/libidn2 (:1258)
+#     gcrypt (:460)    gnupg.org/libgcrypt (+ libgpg-error) (:1276)
+#     polkit (:417)    nothing to build: meson.build:1151-1159 only installs
+#                      the policy files (`required : false` on the library)
+#     vmspawn (:173) = enabled: `auto` is disabled outside developer mode
+#                      (meson.build:1625), stated instead of inherited
+#     nss-mymachines (:159), nss-resolve (:161)   glibc only (libc=glibc)
+#     efi (:95), tpm (:97)   booleans, no library; the boot LOADER (bootloader,
+#                      :501) is a different option and stays off, below
+#     smack (:411), ima (:419), ipe (:421)   booleans, no library
+#     dns-over-tls (:389) = openssl: one TLS stack, already declared
+#     glib (:492), dbus (:494)   "for tests only" (the option's own text): the
+#                      unit tests link them, so they follow tests=true
+#     tests (:533) = true, dlopen-tests (:535) = true: the unit tests are
+#                      BUILT; `unsafe` is NOT chosen, those modify the host
+#                      (meson.build:2474). dlopen-tests checks that every
+#                      dlopen soname resolves, which is the run-time closure
+#                      risk this recipe carries (meson.build:353)
 #   OFF, no recipe or out of scope, each costing only its feature:
-#     acl, audit, selinux, apparmor, pam, passwdqc, pwquality, microhttpd,
-#     libcryptsetup, libcryptsetup-plugins, libcurl, libidn2, qrencode, gcrypt,
-#     gnutls, p11kit, libfido2, tpm2, elfutils, xkbcommon, glib, dbus,
-#     libarchive, xenctrl, polkit, smack, ima, ipe, bootloader, efi, tpm,
-#     bpf-framework, vmspawn, importd, imds, remote, homed, repart, sysupdate,
-#     nss-mymachines, nss-resolve (the modules), idn, dns-over-tls, ukify,
-#     log-message-verification, man, html, translations, tests, fuzz-tests.
+#     audit, selinux, apparmor, pam, passwdqc, pwquality, microhttpd,
+#     libcryptsetup, libcryptsetup-plugins, qrencode, gnutls, p11kit, tpm2,
+#     elfutils, xkbcommon, libarchive, xenctrl, bootloader, bpf-framework,
+#     remote, homed, ukify, log-message-verification, man, html, translations,
+#     fuzz-tests.
+#   ⛔ libfido2 (:468) STAYS OFF ON PURPOSE, NOT FOR WANT OF A RECIPE: the
+#     recipe exists (developers.yubico.com/libfido2) but declares systemd.io as
+#     a build dependency, for libudev (its CMakeLists.txt:248
+#     `pkg_search_module(UDEV libudev REQUIRED)`). systemd.io depending on it
+#     would be a cycle. It comes ON when libfido2 can take libudev from
+#     somewhere else (a standalone udev library recipe), or systemd is split.
 #   libc=glibc (:424) stated: a musl host needs another recipe's attention.
-#   ⚠ `tests=false`, `fuzz-tests=false`: no test suite is built or run.
+#   ⚠ `fuzz-tests=false`: the fuzzer regression corpora are not built.
+#   `vmlinux-h=disabled` (:573): `generated` reads the BUILD HOST's
+#     /sys/kernel/btf/vmlinux (src/bpf/meson.build:261-305), which is host
+#     dependent, not reproducible and absent in a sandbox. It costs only the
+#     lsm-integrity BPF program; bpf-framework is off here anyway.
 #   Directories that would be written outside the prefix are switched off:
 #     pamconfdir, sshconfdir, sshdconfdir, shellprofiledir, rpmmacrosdir,
 #     bashcompletiondir, zshcompletiondir = "no" (:229-239, :528-531);
-#     create-log-dirs=false (:153) would mkdir under the host's /var/log.
+#     create-log-dirs=false (:153): src/journal/meson.build:197-198 installs
+#     `/var/log/journal` by ABSOLUTE path, which would write the host's /var.
 #
 # ⚠ RUN-TIME LIBRARY LOOKUP. systemd opens most optional libraries with dlopen()
 # by soname (the `dlopen` machinery in src/shared). A library in another store
 # prefix is found only through the binary's rpath, which is set below for the
 # libraries this recipe enables. NOT verified by running anything.
 #
-# ⚠ NOT CARRIED FROM THE FRAGMENT: its dependencies on curl.se, gnutls.org,
-# libexpat.github.io, google.com/fullycapable (libcap, which 262.2's
-# meson.build does not use: `grep libcap meson.build` finds nothing) and
-# gnu.org/libidn2, whose features are off above.
+# ⚠ EVERY dlopen'd LIBRARY IS ON libsystemd-shared's RPATH. dlopen() resolves a
+# soname through the RUNPATH of the object that calls it, and nearly every
+# optional library here is opened that way (meson.build:1050-1484), so none is
+# a DT_NEEDED of anything. zpkb's fixup (fixup/rpath.go:250-272) KEEPS only
+# $ORIGIN entries and entries inside this project's own dir, DROPS every other
+# absolute entry, and then ADDS the install prefixes of the build's dependency
+# closure (fixup.go:26, DepPaths) as $ORIGIN-relative entries. So a library
+# must be in `dependencies` to be found, and is also put on the link line
+# (LDFLAGS) so the binary carries the slot for them. Both are done for acl,
+# attr, curl, libidn2, libgcrypt, libgpg-error and the libraries that were
+# already linked. That DepPaths is filled with exactly these prefixes was read
+# in fixup.go, not run.
+#
+# ⚠ NOT CARRIED FROM THE FRAGMENT: its dependencies on gnutls.org,
+# libexpat.github.io, and google.com/fullycapable (libcap, which 262.2's
+# meson.build does not use: `grep libcap meson.build` finds nothing).
 
 summary = "systemd: the Linux service manager, udev, journald and their command-line tools"
 
@@ -81,6 +139,14 @@ dependencies = {
   "sourceware.org/bzip2"             = "*"
   "tukaani.org/xz"                   = "*"
   "zlib.net"                         = "*"
+
+  # Opened with dlopen() at run time (the header explains the rpath).
+  "savannah.nongnu.org/acl"          = "*"
+  "savannah.nongnu.org/attr"         = "*"
+  "curl.se"                          = "*"
+  "gnu.org/libidn2"                  = "*"
+  "gnupg.org/libgcrypt"              = "*"
+  "gnupg.org/libgpg-error"           = "*"
 }
 
 distributable {
@@ -109,6 +175,12 @@ build {
     "python.org"                    = "^3"
     "palletsprojects.com/jinja2"    = "*"
     "gnu.org/gcc"                   = "*"
+
+    # tests=true links them into the unit tests only (glib :492, dbus :494:
+    # "for tests only"); neither is a run-time dependency of an installed file.
+    "gnome.org/glib"                = "*"
+    "freedesktop.org/dbus"          = "*"
+    "sourceware.org/libffi"         = "3"
   }
 
   env = {
@@ -139,9 +211,33 @@ build {
       "-Dzstd=enabled",
       "-Dpcre2=enabled",
       "-Dnspawn=enabled",
+      "-Dacl=enabled",
+      "-Dlibcurl=enabled",
+      "-Dimds=enabled",
+      "-Dimportd=enabled",
+      "-Dsysupdate=enabled",
+      "-Dsysupdated=enabled",
+      "-Drepart=enabled",
+      "-Dlibidn2=enabled",
+      "-Didn=true",
+      "-Dgcrypt=enabled",
+      "-Dpolkit=enabled",
+      "-Dvmspawn=enabled",
+      "-Dnss-mymachines=enabled",
+      "-Dnss-resolve=enabled",
+      "-Defi=true",
+      "-Dtpm=true",
+      "-Dsmack=true",
+      "-Dima=true",
+      "-Dipe=true",
+      "-Ddns-over-tls=openssl",
+      "-Dglib=enabled",
+      "-Ddbus=enabled",
+      "-Dtests=true",
+      "-Ddlopen-tests=true",
 
       # Features OFF.
-      "-Dacl=disabled",
+      "-Dvmlinux-h=disabled",
       "-Daudit=disabled",
       "-Dselinux=disabled",
       "-Dapparmor=disabled",
@@ -151,45 +247,26 @@ build {
       "-Dmicrohttpd=disabled",
       "-Dlibcryptsetup=disabled",
       "-Dlibcryptsetup-plugins=disabled",
-      "-Dlibcurl=disabled",
-      "-Dlibidn2=disabled",
       "-Dqrencode=disabled",
-      "-Dgcrypt=disabled",
       "-Dgnutls=disabled",
       "-Dp11kit=disabled",
+      # libfido2: OFF because its recipe needs systemd.io for libudev (cycle),
+      # see the header.
       "-Dlibfido2=disabled",
       "-Dtpm2=disabled",
       "-Delfutils=disabled",
       "-Dxkbcommon=disabled",
-      "-Dglib=disabled",
-      "-Ddbus=disabled",
       "-Dlibarchive=disabled",
       "-Dxenctrl=disabled",
-      "-Dpolkit=disabled",
       "-Dbootloader=disabled",
       "-Dbpf-framework=disabled",
-      "-Dvmspawn=disabled",
-      "-Dimportd=disabled",
-      "-Dimds=disabled",
       "-Dremote=disabled",
       "-Dhomed=disabled",
-      "-Drepart=disabled",
-      "-Dsysupdate=disabled",
-      "-Dnss-mymachines=disabled",
-      "-Dnss-resolve=disabled",
       "-Dukify=disabled",
       "-Dlog-message-verification=disabled",
       "-Dman=disabled",
       "-Dhtml=disabled",
-      "-Dsmack=false",
-      "-Dima=false",
-      "-Dipe=false",
-      "-Defi=false",
-      "-Dtpm=false",
-      "-Didn=false",
-      "-Ddns-over-tls=false",
       "-Dtranslations=false",
-      "-Dtests=false",
       "-Dfuzz-tests=false",
 
       # Nothing outside the prefix.
@@ -206,8 +283,8 @@ build {
       "-Ddbussystemservicedir={{prefix}}/share/dbus-1/system-services",
     ]
 
-    PKG_CONFIG_PATH = "{{deps.github.com/util-linux/util-linux.prefix}}/lib/pkgconfig:{{deps.github.com/seccomp/libseccomp.prefix}}/lib/pkgconfig:{{deps.kernel.org/kmod.prefix}}/lib/pkgconfig:{{deps.github.com/besser82/libxcrypt.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib64/pkgconfig:{{deps.zlib.net.prefix}}/lib/pkgconfig:{{deps.sourceware.org/bzip2.prefix}}/lib/pkgconfig:{{deps.tukaani.org/xz.prefix}}/lib/pkgconfig:{{deps.lz4.org.prefix}}/lib/pkgconfig:{{deps.facebook.com/zstd.prefix}}/lib/pkgconfig:{{deps.pcre.org/v2.prefix}}/lib/pkgconfig"
-    LDFLAGS         = "-Wl,-rpath,{{prefix}}/lib -Wl,-rpath,{{deps.github.com/util-linux/util-linux.prefix}}/lib -Wl,-rpath,{{deps.github.com/seccomp/libseccomp.prefix}}/lib -Wl,-rpath,{{deps.kernel.org/kmod.prefix}}/lib -Wl,-rpath,{{deps.github.com/besser82/libxcrypt.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib64 -Wl,-rpath,{{deps.zlib.net.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/bzip2.prefix}}/lib -Wl,-rpath,{{deps.tukaani.org/xz.prefix}}/lib -Wl,-rpath,{{deps.lz4.org.prefix}}/lib -Wl,-rpath,{{deps.facebook.com/zstd.prefix}}/lib -Wl,-rpath,{{deps.pcre.org/v2.prefix}}/lib"
+    PKG_CONFIG_PATH = "{{deps.github.com/util-linux/util-linux.prefix}}/lib/pkgconfig:{{deps.github.com/seccomp/libseccomp.prefix}}/lib/pkgconfig:{{deps.kernel.org/kmod.prefix}}/lib/pkgconfig:{{deps.github.com/besser82/libxcrypt.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib64/pkgconfig:{{deps.zlib.net.prefix}}/lib/pkgconfig:{{deps.sourceware.org/bzip2.prefix}}/lib/pkgconfig:{{deps.tukaani.org/xz.prefix}}/lib/pkgconfig:{{deps.lz4.org.prefix}}/lib/pkgconfig:{{deps.facebook.com/zstd.prefix}}/lib/pkgconfig:{{deps.pcre.org/v2.prefix}}/lib/pkgconfig:{{deps.savannah.nongnu.org/acl.prefix}}/lib/pkgconfig:{{deps.savannah.nongnu.org/attr.prefix}}/lib/pkgconfig:{{deps.curl.se.prefix}}/lib/pkgconfig:{{deps.gnu.org/libidn2.prefix}}/lib/pkgconfig:{{deps.gnupg.org/libgcrypt.prefix}}/lib/pkgconfig:{{deps.gnupg.org/libgpg-error.prefix}}/lib/pkgconfig:{{deps.gnome.org/glib.prefix}}/lib/pkgconfig:{{deps.freedesktop.org/dbus.prefix}}/lib/pkgconfig:{{deps.sourceware.org/libffi.prefix}}/lib/pkgconfig"
+    LDFLAGS         = "-Wl,-rpath,{{prefix}}/lib -Wl,-rpath,{{deps.github.com/util-linux/util-linux.prefix}}/lib -Wl,-rpath,{{deps.github.com/seccomp/libseccomp.prefix}}/lib -Wl,-rpath,{{deps.kernel.org/kmod.prefix}}/lib -Wl,-rpath,{{deps.github.com/besser82/libxcrypt.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib64 -Wl,-rpath,{{deps.zlib.net.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/bzip2.prefix}}/lib -Wl,-rpath,{{deps.tukaani.org/xz.prefix}}/lib -Wl,-rpath,{{deps.lz4.org.prefix}}/lib -Wl,-rpath,{{deps.facebook.com/zstd.prefix}}/lib -Wl,-rpath,{{deps.pcre.org/v2.prefix}}/lib -Wl,-rpath,{{deps.savannah.nongnu.org/acl.prefix}}/lib -Wl,-rpath,{{deps.savannah.nongnu.org/attr.prefix}}/lib -Wl,-rpath,{{deps.curl.se.prefix}}/lib -Wl,-rpath,{{deps.gnu.org/libidn2.prefix}}/lib -Wl,-rpath,{{deps.gnupg.org/libgcrypt.prefix}}/lib -Wl,-rpath,{{deps.gnupg.org/libgpg-error.prefix}}/lib -Wl,-rpath,{{deps.gnome.org/glib.prefix}}/lib -Wl,-rpath,{{deps.freedesktop.org/dbus.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/libffi.prefix}}/lib"
   }
 
   script = [
@@ -247,7 +324,12 @@ test {
     # +, and the ones it refused must be -.
     "systemctl --version | grep -F '+SECCOMP' >/dev/null",
     "systemctl --version | grep -F '+KMOD' >/dev/null",
+    "systemctl --version | grep -F '+ACL' >/dev/null",
+    "systemctl --version | grep -F '+GCRYPT' >/dev/null",
+    "systemctl --version | grep -F '+LIBCURL' >/dev/null",
+    "systemctl --version | grep -F '+LIBIDN2' >/dev/null",
     "systemctl --version | grep -F -- '-PAM' >/dev/null",
+    "systemctl --version | grep -F -- '-FIDO2' >/dev/null",
     "pkg-config --exists libsystemd libudev",
     "test \"$(systemd-escape 'a b/c')\" = 'a\\x20b-c'",
     "test -f {{prefix}}/include/systemd/sd-bus.h",
@@ -301,6 +383,13 @@ dependency name from meson.build; none was exercised.
 What is therefore UNVERIFIED and likely to need a first-run fix:
   - the `provides` list (read from the build files, not from an install);
   - the exact `systemctl --version` feature string the test greps;
+  - that tests=true (unit tests BUILT, not run: `meson test` is not in the
+    script, many tests need /proc, cgroup v2 or root) and dlopen-tests=true
+    (every dlopen soname must resolve from the build tree) pass;
+  - that the rpath reaches the dlopen'd libraries (read in fixup/rpath.go,
+    never run);
+  - that the libgcrypt recipe's libgcrypt.pc satisfies
+    `dependency('libgcrypt')` (meson.build:1276);
   - that the util-linux recipe of this tree exposes the mount, blkid and fdisk
     pkg-config modules at the versions meson.build:1076-1177 demands;
   - that the python.org + jinja2 environment is visible to meson's
