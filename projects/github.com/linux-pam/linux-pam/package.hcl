@@ -23,9 +23,11 @@
 # which is off, so nothing is installed there.
 #
 # OPTIONS, every one that detects or chooses (meson_options.txt):
+#   ON: audit (:7)   github.com/linux-audit/audit-userspace; meson.build:232 is
+#                    `dependency('audit', required: get_option('audit'))`, the
+#                    `audit` pkg-config module (audit.pc). No cycle: audit-userspace
+#                    depends on neither PAM nor systemd.
 #   OFF, each with its reason:
-#     audit (:7)     libaudit has no recipe yet (audit-userspace is the next PR of
-#                    the series); PAM is rebuilt with it ON when it lands.
 #     econf (:9)     libeconf: no recipe.
 #     logind (:11), elogind (:13)   meson.build:323-332 wants libsystemd >= 254:
 #                    systemd.io depends on this recipe, so a dependency CYCLE.
@@ -75,7 +77,8 @@ distributable {
 }
 
 dependencies = {
-  "github.com/besser82/libxcrypt" = "*"
+  "github.com/besser82/libxcrypt"           = "*"
+  "github.com/linux-audit/audit-userspace" = "4"
 }
 
 build {
@@ -99,7 +102,7 @@ build {
       "-Dvendordir=",
       "-Dsystemdunitdir={{prefix}}/lib/systemd/system",
 
-      "-Daudit=disabled",
+      "-Daudit=enabled",
       "-Deconf=disabled",
       "-Dlogind=disabled",
       "-Delogind=disabled",
@@ -117,8 +120,8 @@ build {
       "-Dlckpwdf=true",
     ]
 
-    PKG_CONFIG_PATH = "{{deps.github.com/besser82/libxcrypt.prefix}}/lib/pkgconfig"
-    LDFLAGS         = "-Wl,-rpath,{{prefix}}/lib -Wl,-rpath,{{deps.github.com/besser82/libxcrypt.prefix}}/lib"
+    PKG_CONFIG_PATH = "{{deps.github.com/besser82/libxcrypt.prefix}}/lib/pkgconfig:{{deps.github.com/linux-audit/audit-userspace.prefix}}/lib/pkgconfig"
+    LDFLAGS         = "-Wl,-rpath,{{prefix}}/lib -Wl,-rpath,{{deps.github.com/besser82/libxcrypt.prefix}}/lib -Wl,-rpath,{{deps.github.com/linux-audit/audit-userspace.prefix}}/lib"
   }
 
   script = [
