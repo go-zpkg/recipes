@@ -88,10 +88,10 @@
 #     `libmicrohttpd` >= 0.9.33, :1097 `pwquality` >= 1.4.1; they show as
 #     "+TPM2", "+ELFUTILS", "+PWQUALITY" in src/basic/build.c:165, :99, :147.
 #     remote (:1612-1623) needs microhttpd AND libcurl (curl.se, already on).
-#     ⚠ The libmicrohttpd recipe is built WITHOUT HTTPS (no gnutls recipe for its
-#     configure to take; `auto` would take the host's), so systemd-journal-remote
-#     and journal-gatewayd serve plain HTTP; TLS options given to them fail at
-#     run time, not at build time. pwquality brings cracklib and linux-pam.
+#     The libmicrohttpd recipe is built WITH HTTPS, through the gnutls.org recipe
+#     (--enable-https --with-gnutls=yes), so the TLS options of
+#     systemd-journal-remote and journal-gatewayd are usable. pwquality brings
+#     cracklib and linux-pam.
 #   ON: xkbcommon, from the libxkbcommon recipe of go-zpkg/recipes#359:
 #     meson.build:1444 `dependency('xkbcommon')` >= 0.3.0, shown as "+XKBCOMMON"
 #     in src/basic/build.c:217. Its xkeyboard-config data root is stated by that
