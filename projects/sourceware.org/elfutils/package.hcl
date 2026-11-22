@@ -48,7 +48,9 @@ versions {
   # https://sourceware.org/elfutils/ftp/). There is no GitHub repository
   # (`git ls-remote https://github.com/elfutils/elfutils.git`: not found).
   url   = "https://sourceware.org/elfutils/ftp/"
-  match = "/^\\d+\\.\\d+\\/?$/"
+  # Unanchored: the anchored form `^\d+\.\d+/?$` matched NOTHING in CI (the
+  # resolver does not hand it the bare link text); this form resolves 0.197.
+  match = "/\\d+\\.\\d+\\//"
   strip = ["/\\/$/"]
 }
 
@@ -169,9 +171,8 @@ elfutils maintainer (Red Hat) as the keyserver holds it, NOT on a key the
 project publishes. The source URL is the project's own FTP, not the GitHub tag
 archive.
 
-⛔ NOT BUILT. Unverified: that the `versions` block resolves (the directory
-listing was read with curl and holds `0.190/` to `0.197/` as links; whether the
-resolver matches on the link text with its trailing slash was not run); that
+⛔ NOT BUILT. The `versions` block is verified: `zpkb lint --check-newest-pinned`
+resolves 0.197 from the FTP listing. Unverified: that
 `--enable-deterministic-archives` and `--disable-rpath` are accepted verbatim
 (read from configure's help text, not run); that the headers land in
 include/elfutils for libdw (libdwfl.h, read from the Makefile.am layout and not
