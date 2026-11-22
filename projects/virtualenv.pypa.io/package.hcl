@@ -32,7 +32,7 @@ distributable {
   # Fetched with `zpkb sourcepin`, and byte-identical to the sha256 PyPI's simple
   # index (pypi.org/simple/virtualenv/) records for the sdist.
   sha256 = {
-    "21.15.11" = "6ad11e129f546835ae81d47a27f48ed32dcc4e2a0776014a159bab8895cdb9ac"
+    "21.15.12" = "a3976f886eb6019fcb1d137b223d160adaeff524ab0ad785c729a43c31cc158c"
   }
 }
 

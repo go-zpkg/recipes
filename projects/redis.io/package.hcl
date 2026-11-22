@@ -50,10 +50,11 @@ distributable {
   url              = "https://github.com/redis/redis/archive/refs/tags/{{version.raw}}.tar.gz"
   strip-components = 1
 
-  # 4780701 bytes. ⚠ A SINGLE-HOST CHAIN, stated: GitHub's generated archive of
-  # the 8.10.3 tag, no signature, fetched twice independently with the same digest.
+  # 5530081 bytes. ⚠ A SINGLE-HOST CHAIN, stated: GitHub's generated archive of
+  # the 8.12.0 tag, no signature, fetched twice independently (github.com and
+  # codeload.github.com) with the same digest.
   sha256 = {
-    "8.10.3" = "85ae62e175cc76f638015fa18cb384b549b6808a765425d9e9d47466f69532ea"
+    "8.12.0" = "07e2477372566acf587e32c1abc8af088ad901fb2c725388ec9a5bef29c47319"
   }
 }
 
