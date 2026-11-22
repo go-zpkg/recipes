@@ -92,11 +92,15 @@
 #     configure to take; `auto` would take the host's), so systemd-journal-remote
 #     and journal-gatewayd serve plain HTTP; TLS options given to them fail at
 #     run time, not at build time. pwquality brings cracklib and linux-pam.
+#   ON: xkbcommon, from the libxkbcommon recipe of go-zpkg/recipes#359:
+#     meson.build:1444 `dependency('xkbcommon')` >= 0.3.0, shown as "+XKBCOMMON"
+#     in src/basic/build.c:217. Its xkeyboard-config data root is stated by that
+#     recipe, so no host /usr/share/X11/xkb is read.
 #   ⛔ bpf-framework (:571) STAYS OFF ON PURPOSE: it needs bpftool and clang as
 #     well as libbpf, none of which has a recipe, so a libbpf recipe alone would
 #     enable nothing.
 #   OFF, no recipe or out of scope, each costing only its feature:
-#     selinux, apparmor, passwdqc, xkbcommon, xenctrl, bootloader,
+#     selinux, apparmor, passwdqc, xenctrl, bootloader,
 #     ukify, log-message-verification, man, html, translations, fuzz-tests.
 #   ON: pam (:438), homed (:135) and pamconfdir (:228), now that
 #     github.com/linux-pam/linux-pam has a recipe. homed's prerequisites
@@ -193,6 +197,7 @@ dependencies = {
   "sourceware.org/elfutils"          = "0"
   "gnu.org/libmicrohttpd"            = "1"
   "github.com/libpwquality/libpwquality" = "1"
+  "github.com/xkbcommon/libxkbcommon" = "1"
 }
 
 distributable {
@@ -305,7 +310,7 @@ build {
       "-Dlibfido2=disabled",
       "-Dtpm2=enabled",
       "-Delfutils=enabled",
-      "-Dxkbcommon=disabled",
+      "-Dxkbcommon=enabled",
       "-Dlibarchive=enabled",
       "-Dxenctrl=disabled",
       "-Dbootloader=disabled",
@@ -338,8 +343,8 @@ build {
       "-Ddbussystemservicedir={{prefix}}/share/dbus-1/system-services",
     ]
 
-    PKG_CONFIG_PATH = "{{deps.github.com/util-linux/util-linux.prefix}}/lib/pkgconfig:{{deps.github.com/seccomp/libseccomp.prefix}}/lib/pkgconfig:{{deps.kernel.org/kmod.prefix}}/lib/pkgconfig:{{deps.github.com/besser82/libxcrypt.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib64/pkgconfig:{{deps.zlib.net.prefix}}/lib/pkgconfig:{{deps.sourceware.org/bzip2.prefix}}/lib/pkgconfig:{{deps.tukaani.org/xz.prefix}}/lib/pkgconfig:{{deps.lz4.org.prefix}}/lib/pkgconfig:{{deps.facebook.com/zstd.prefix}}/lib/pkgconfig:{{deps.pcre.org/v2.prefix}}/lib/pkgconfig:{{deps.savannah.nongnu.org/acl.prefix}}/lib/pkgconfig:{{deps.savannah.nongnu.org/attr.prefix}}/lib/pkgconfig:{{deps.curl.se.prefix}}/lib/pkgconfig:{{deps.gnu.org/libidn2.prefix}}/lib/pkgconfig:{{deps.gnupg.org/libgcrypt.prefix}}/lib/pkgconfig:{{deps.gnupg.org/libgpg-error.prefix}}/lib/pkgconfig:{{deps.gnome.org/glib.prefix}}/lib/pkgconfig:{{deps.freedesktop.org/dbus.prefix}}/lib/pkgconfig:{{deps.sourceware.org/libffi.prefix}}/lib/pkgconfig:{{deps.gnutls.org.prefix}}/lib/pkgconfig:{{deps.github.com/p11-glue/p11-kit.prefix}}/lib/pkgconfig:{{deps.gitlab.com/cryptsetup/cryptsetup.prefix}}/lib/pkgconfig:{{deps.sourceware.org/lvm2.prefix}}/lib/pkgconfig:{{deps.github.com/linux-pam/linux-pam.prefix}}/lib/pkgconfig:{{deps.github.com/linux-audit/audit-userspace.prefix}}/lib/pkgconfig:{{deps.github.com/libarchive/libarchive.prefix}}/lib/pkgconfig:{{deps.gnome.org/libxml2.prefix}}/lib/pkgconfig:{{deps.github.com/fukuchi/libqrencode.prefix}}/lib/pkgconfig:{{deps.github.com/tpm2-software/tpm2-tss.prefix}}/lib/pkgconfig:{{deps.sourceware.org/elfutils.prefix}}/lib/pkgconfig:{{deps.gnu.org/libmicrohttpd.prefix}}/lib/pkgconfig:{{deps.github.com/libpwquality/libpwquality.prefix}}/lib/pkgconfig"
-    LDFLAGS       = "-Wl,-rpath,{{prefix}}/lib -Wl,-rpath,{{deps.github.com/util-linux/util-linux.prefix}}/lib -Wl,-rpath,{{deps.github.com/seccomp/libseccomp.prefix}}/lib -Wl,-rpath,{{deps.kernel.org/kmod.prefix}}/lib -Wl,-rpath,{{deps.github.com/besser82/libxcrypt.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib64 -Wl,-rpath,{{deps.zlib.net.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/bzip2.prefix}}/lib -Wl,-rpath,{{deps.tukaani.org/xz.prefix}}/lib -Wl,-rpath,{{deps.lz4.org.prefix}}/lib -Wl,-rpath,{{deps.facebook.com/zstd.prefix}}/lib -Wl,-rpath,{{deps.pcre.org/v2.prefix}}/lib -Wl,-rpath,{{deps.savannah.nongnu.org/acl.prefix}}/lib -Wl,-rpath,{{deps.savannah.nongnu.org/attr.prefix}}/lib -Wl,-rpath,{{deps.curl.se.prefix}}/lib -Wl,-rpath,{{deps.gnu.org/libidn2.prefix}}/lib -Wl,-rpath,{{deps.gnupg.org/libgcrypt.prefix}}/lib -Wl,-rpath,{{deps.gnupg.org/libgpg-error.prefix}}/lib -Wl,-rpath,{{deps.gnome.org/glib.prefix}}/lib -Wl,-rpath,{{deps.freedesktop.org/dbus.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/libffi.prefix}}/lib -Wl,-rpath,{{deps.gnutls.org.prefix}}/lib -Wl,-rpath,{{deps.github.com/p11-glue/p11-kit.prefix}}/lib -Wl,-rpath,{{deps.gitlab.com/cryptsetup/cryptsetup.prefix}}/lib -Wl,-rpath,{{deps.github.com/linux-pam/linux-pam.prefix}}/lib -Wl,-rpath,{{deps.github.com/linux-audit/audit-userspace.prefix}}/lib -Wl,-rpath,{{deps.github.com/libarchive/libarchive.prefix}}/lib -Wl,-rpath,{{deps.gnome.org/libxml2.prefix}}/lib -Wl,-rpath,{{deps.github.com/fukuchi/libqrencode.prefix}}/lib -Wl,-rpath,{{deps.github.com/tpm2-software/tpm2-tss.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/elfutils.prefix}}/lib -Wl,-rpath,{{deps.gnu.org/libmicrohttpd.prefix}}/lib -Wl,-rpath,{{deps.github.com/libpwquality/libpwquality.prefix}}/lib"
+    PKG_CONFIG_PATH = "{{deps.github.com/util-linux/util-linux.prefix}}/lib/pkgconfig:{{deps.github.com/seccomp/libseccomp.prefix}}/lib/pkgconfig:{{deps.kernel.org/kmod.prefix}}/lib/pkgconfig:{{deps.github.com/besser82/libxcrypt.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib/pkgconfig:{{deps.openssl.org.prefix}}/lib64/pkgconfig:{{deps.zlib.net.prefix}}/lib/pkgconfig:{{deps.sourceware.org/bzip2.prefix}}/lib/pkgconfig:{{deps.tukaani.org/xz.prefix}}/lib/pkgconfig:{{deps.lz4.org.prefix}}/lib/pkgconfig:{{deps.facebook.com/zstd.prefix}}/lib/pkgconfig:{{deps.pcre.org/v2.prefix}}/lib/pkgconfig:{{deps.savannah.nongnu.org/acl.prefix}}/lib/pkgconfig:{{deps.savannah.nongnu.org/attr.prefix}}/lib/pkgconfig:{{deps.curl.se.prefix}}/lib/pkgconfig:{{deps.gnu.org/libidn2.prefix}}/lib/pkgconfig:{{deps.gnupg.org/libgcrypt.prefix}}/lib/pkgconfig:{{deps.gnupg.org/libgpg-error.prefix}}/lib/pkgconfig:{{deps.gnome.org/glib.prefix}}/lib/pkgconfig:{{deps.freedesktop.org/dbus.prefix}}/lib/pkgconfig:{{deps.sourceware.org/libffi.prefix}}/lib/pkgconfig:{{deps.gnutls.org.prefix}}/lib/pkgconfig:{{deps.github.com/p11-glue/p11-kit.prefix}}/lib/pkgconfig:{{deps.gitlab.com/cryptsetup/cryptsetup.prefix}}/lib/pkgconfig:{{deps.sourceware.org/lvm2.prefix}}/lib/pkgconfig:{{deps.github.com/linux-pam/linux-pam.prefix}}/lib/pkgconfig:{{deps.github.com/linux-audit/audit-userspace.prefix}}/lib/pkgconfig:{{deps.github.com/libarchive/libarchive.prefix}}/lib/pkgconfig:{{deps.gnome.org/libxml2.prefix}}/lib/pkgconfig:{{deps.github.com/fukuchi/libqrencode.prefix}}/lib/pkgconfig:{{deps.github.com/tpm2-software/tpm2-tss.prefix}}/lib/pkgconfig:{{deps.sourceware.org/elfutils.prefix}}/lib/pkgconfig:{{deps.gnu.org/libmicrohttpd.prefix}}/lib/pkgconfig:{{deps.github.com/libpwquality/libpwquality.prefix}}/lib/pkgconfig:{{deps.github.com/xkbcommon/libxkbcommon.prefix}}/lib/pkgconfig"
+    LDFLAGS       = "-Wl,-rpath,{{prefix}}/lib -Wl,-rpath,{{deps.github.com/util-linux/util-linux.prefix}}/lib -Wl,-rpath,{{deps.github.com/seccomp/libseccomp.prefix}}/lib -Wl,-rpath,{{deps.kernel.org/kmod.prefix}}/lib -Wl,-rpath,{{deps.github.com/besser82/libxcrypt.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib -Wl,-rpath,{{deps.openssl.org.prefix}}/lib64 -Wl,-rpath,{{deps.zlib.net.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/bzip2.prefix}}/lib -Wl,-rpath,{{deps.tukaani.org/xz.prefix}}/lib -Wl,-rpath,{{deps.lz4.org.prefix}}/lib -Wl,-rpath,{{deps.facebook.com/zstd.prefix}}/lib -Wl,-rpath,{{deps.pcre.org/v2.prefix}}/lib -Wl,-rpath,{{deps.savannah.nongnu.org/acl.prefix}}/lib -Wl,-rpath,{{deps.savannah.nongnu.org/attr.prefix}}/lib -Wl,-rpath,{{deps.curl.se.prefix}}/lib -Wl,-rpath,{{deps.gnu.org/libidn2.prefix}}/lib -Wl,-rpath,{{deps.gnupg.org/libgcrypt.prefix}}/lib -Wl,-rpath,{{deps.gnupg.org/libgpg-error.prefix}}/lib -Wl,-rpath,{{deps.gnome.org/glib.prefix}}/lib -Wl,-rpath,{{deps.freedesktop.org/dbus.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/libffi.prefix}}/lib -Wl,-rpath,{{deps.gnutls.org.prefix}}/lib -Wl,-rpath,{{deps.github.com/p11-glue/p11-kit.prefix}}/lib -Wl,-rpath,{{deps.gitlab.com/cryptsetup/cryptsetup.prefix}}/lib -Wl,-rpath,{{deps.github.com/linux-pam/linux-pam.prefix}}/lib -Wl,-rpath,{{deps.github.com/linux-audit/audit-userspace.prefix}}/lib -Wl,-rpath,{{deps.github.com/libarchive/libarchive.prefix}}/lib -Wl,-rpath,{{deps.gnome.org/libxml2.prefix}}/lib -Wl,-rpath,{{deps.github.com/fukuchi/libqrencode.prefix}}/lib -Wl,-rpath,{{deps.github.com/tpm2-software/tpm2-tss.prefix}}/lib -Wl,-rpath,{{deps.sourceware.org/elfutils.prefix}}/lib -Wl,-rpath,{{deps.gnu.org/libmicrohttpd.prefix}}/lib -Wl,-rpath,{{deps.github.com/libpwquality/libpwquality.prefix}}/lib -Wl,-rpath,{{deps.github.com/xkbcommon/libxkbcommon.prefix}}/lib"
   }
 
   script = [
@@ -393,7 +398,8 @@ test {
     "systemctl --version | grep -F -- '+LIBARCHIVE' >/dev/null",
     "systemctl --version | grep -F -- '+TPM2' >/dev/null",
     "systemctl --version | grep -F -- '+ELFUTILS' >/dev/null",
-    "systemctl --version | grep -F -- '+PWQUALITY' >/dev/null",    "systemctl --version | grep -F -- '-FIDO2' >/dev/null",
+    "systemctl --version | grep -F -- '+PWQUALITY' >/dev/null",
+    "systemctl --version | grep -F -- '+XKBCOMMON' >/dev/null",    "systemctl --version | grep -F -- '-FIDO2' >/dev/null",
     "pkg-config --exists libsystemd libudev",
     "test \"$(systemd-escape 'a b/c')\" = 'a\\x20b-c'",
     "test -f {{prefix}}/include/systemd/sd-bus.h",
