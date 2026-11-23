@@ -14,13 +14,16 @@
 #   -Ddefault-network=true   DHCP on every link, what a microVM wants;
 #   meson install --destdir {{prefix}}/rootfs, then the layout steps in `script`.
 #
-# ⛔ NOTHING HERE IS BUILT, and the rootfs is NOT YET SELF-CONTAINED: the binaries
-# still carry the store RUNPATHs of their dependencies, and the shared libraries
-# (DT_NEEDED + `.note.dlopen` sonames, glibc and ld.so) are not in the rootfs.
-# zpkb fixup skips `rootfs/` (it walks only bin, lib, libexec under the prefix).
-# TODO(go-zpkg/recipes#348): when zpkb's rootfs closure lands, add its opt-in
-# key HERE (name and shape are the zpkb change's to define); it must copy the
-# closure into rootfs/usr/lib. It is deliberately NOT done in shell.
+# ⛔ NOTHING HERE IS BUILT. `build.rootfs = "rootfs"` (zpkb v0.101.0, go-zpkg/zpkb#538,
+# schema/package.schema.json:52; Linux only) opts into zpkb's ROOTFS CLOSURE: every
+# ELF under rootfs/ gets its DT_NEEDED libraries (transitively), its PT_INTERP loader
+# and its `.note.dlopen` entries resolved against the dependency prefixes and copied
+# in. An unresolved DT_NEEDED, a missing loader or a `required` dlopen entry FAILS the
+# build. ⛔ THE CLOSURE REWRITES THE STORE RUNPATHs of the copies in place (store
+# entries dropped, /usr/lib kept or appended), so the binaries' RUNPATHs are no longer
+# the dependency store prefixes that LDFLAGS puts on them at link time.
+# Not done in shell. (Closes the TODO of go-zpkg/recipes#348.)
+# `provides` below keeps its rootfs/... entries: zpkb ignores non-bin/ provides.
 #
 # Layout choices, from https://systemd.io/BUILDING_IMAGES/ and
 # https://systemd.io/CONTAINER_INTERFACE/ (the latter lists no file the rootfs must
@@ -276,6 +279,8 @@ distributable {
 }
 
 build {
+  rootfs = "rootfs"
+
   dependencies = {
     "mesonbuild.com"                = "*"
     "ninja-build.org"               = "*"
