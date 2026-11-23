@@ -113,6 +113,7 @@ distributable {
   # this was written, and three days later it was not — the default build was
   # a refusal. Verified the same way; the measurement is in provenance.
   sha256 = {
+    "7.3.6"  = "8183d475a76a0faffa92d6cd500af421f589dfd0300a0f1060bb875e11d45723"
     "7.3.5"  = "8f293f83d54f0b7b9be56863ebc5e4ea79d73e530b4ae55c572be97ef39f0990"
     "7.3.4"  = "b11b6df8295e8e991ff040b71aaa4994a8b55caa23b6b092907f195b5840fd1f"
     "7.2.15" = "d0f6b1d7324c937ccaeb5c4ca7084bfcf71db2edb3e2d3a31f0ad83a681809ab"
@@ -344,6 +345,14 @@ https://github.com/gregkh.gpg (1 key read, selected by the fingerprint):
     sha256   8f293f83d54f0b7b9be56863ebc5e4ea79d73e530b4ae55c572be97ef39f0990   <- what this recipe PINS
   signature  GOOD over the decompressed tar (linux-7.3.5.tar.sign),
              signed at 2026-11-17T10:18:09Z
+    signer   647F28654894E3BD457199BE38DBBDC86092693E
+
+Added 2026-11-23, same command, key from https://github.com/gregkh.gpg:
+
+  archive    linux-7.3.6.tar.xz    162613036 bytes
+    sha256   8183d475a76a0faffa92d6cd500af421f589dfd0300a0f1060bb875e11d45723   <- what this recipe PINS
+  signature  GOOD over the decompressed tar (linux-7.3.6.tar.sign),
+             signed at 2026-11-23T07:47:06Z
     signer   647F28654894E3BD457199BE38DBBDC86092693E
 
 ⭐ AND THE A/B IS WHAT MAKES IT A MEASUREMENT RATHER THAN A HOPE. The same
