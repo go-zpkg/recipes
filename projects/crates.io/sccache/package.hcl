@@ -119,7 +119,7 @@ S="{{prefix}}/bin/sccache"
 test -x "$S"
 # clap's crate version: the binary name and Cargo.toml:6.
 OUT="$("$S" --version)"
-if [ "$OUT" != "sccache 0.19.0" ]; then echo "--version printed '$OUT'" >&2; exit 1; fi
+if [ "$OUT" != "sccache {{version}}" ]; then echo "--version printed '$OUT'" >&2; exit 1; fi
 "$S" --help > help.txt
 grep -q -- "--show-stats" help.txt
 
