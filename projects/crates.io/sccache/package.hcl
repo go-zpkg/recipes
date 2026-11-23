@@ -34,6 +34,8 @@ distributable {
   # second, independent fetch: curl on the same URL, shasum -a 256.
   sha256 = {
     "0.19.0" = "2da079033cd19fd8e2a09f56f9a7d9d1a72d591ff3acdc47d95b920145cf2671"
+    # 616256 bytes; curl on the url above, shasum -a 256.
+    "0.20.0" = "1957c3ec03866cb0196a4dd038faf11f8f6f14d131d9b4c93c9787762360d23a"
   }
 }
 
