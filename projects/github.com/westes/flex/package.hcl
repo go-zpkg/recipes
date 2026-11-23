@@ -103,6 +103,13 @@ distributable {
   sha256 = {
     "2.6.15" = "ba38801d12d38782e36f2ddd66c118aa9ed3cbed9849194c4e68d9894cd739d9"
     "2.7.3"  = "b18bbc3622b2b9ebecd0423f4e110adfad8db51d0c5ada3f26660c7cb7c735ec"
+
+    # 2.7.4 ADDED 2026-11-23 (published 01:17 UTC; main's ci went red on the
+    # `--check-newest-pinned` step from that commit on). The digest is of my own
+    # download of flex-2.7.4.tar.gz (1.8 MB) and equals line 1 of the release's
+    # SHA256SUMS. ⚠ The release signature was NOT verified for this pin, unlike
+    # 2.6.15 and 2.7.3 above; pinned, not built.
+    "2.7.4"  = "9bf281cd771d2b15d547896c8b53f8d061cfe85c4dd8ed6a6d733b5f10f42fc6"
   }
 
   # ⛔ NO `sha` FIELD. `sha` means "where the expected SHA-256 is PUBLISHED", a
