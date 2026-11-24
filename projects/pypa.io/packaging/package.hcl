@@ -26,6 +26,10 @@ distributable {
   # index (pypi.org/simple/packaging/) records for the sdist.
   sha256 = {
     "26.3" = "94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79"
+
+    # 26.4: 355877 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 26.4` (one fetch; not compared with PyPI's index for this version).
+    "26.4" = "c4b671c41ddb9bf26e543c37723610d28fb6bf7affc4da17cf048d419d2c062a"
   }
 }
 
