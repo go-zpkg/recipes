@@ -34,6 +34,15 @@ distributable {
   # of the .tar.xz a build downloads; the signature covers the decompressed tar.
   sha256 = {
     "2.8.8" = "3acfa685f2dd7fcc832e0b77bc7093aa7da554a51ce8dafbb4138eaa854eee35"
+
+    # 2.8.9: 12006612 bytes. The newest of the v2.8 series, which is what the
+    # versions block resolves, so a build asks for it and found no pin.
+    # Recorded with the same `zpkb sourcepin` call as 2.8.8: signature
+    # (cryptsetup-2.8.9.tar.sign, covering the decompressed tar) verified
+    # against key 2A2918243FDE46648D0686F9D9B0577BD93E98FC, the fingerprint
+    # named by cryptsetup-2.8.9 SECURITY.md:9, and the digest confirmed by an
+    # independent `shasum -a 256`.
+    "2.8.9" = "8667085a4f59174928948b501b4a2a68f7f1cce1cfe46170b8f40fa6534742b3"
   }
 }
 

@@ -39,6 +39,10 @@ distributable {
   # (`curl -L` + `shasum -a 256`): the same digest. Nothing is signed.
   sha256 = {
     "0.10.26" = "57700786539a322a50f1848332e3465bf15efa5af2fd8b6113f36cbfce46c830"
+
+    # 0.10.28: 47555 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 0.10.28` (one fetch; generated tag archive, nothing signed).
+    "0.10.28" = "1069764333ff3ef36b8822be6a058d5241b4d12884ac003e7d66695a8a1238e9"
   }
 }
 
@@ -52,7 +56,12 @@ sources = [
   {
     url       = "https://github.com/lu-zero/cargo-c/releases/download/v{{version.raw}}/Cargo.lock"
     extract   = false
-    sha256    = { "0.10.26" = "d3cb865d40625de197b71fa591f1f24c0593b5a24b46b7c126eae7fecf7be315" }
+    # 0.10.28: 97990 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 0.10.28` (one fetch of the release's Cargo.lock asset).
+    sha256 = {
+      "0.10.26" = "d3cb865d40625de197b71fa591f1f24c0593b5a24b46b7c126eae7fecf7be315"
+      "0.10.28" = "7272f5fdbaa92f4e29750286b6c9f3fde299c306ab21734be879f3b82159c12e"
+    }
   },
 ]
 

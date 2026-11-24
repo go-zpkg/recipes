@@ -66,6 +66,12 @@ distributable {
   # never asked).
   sha256 = {
     "34.3" = "985554de49c21a58abd68c6cda2251384e1e5bb08b3b14c7f02b51f4c90c2958"
+
+    # 34.4: 445036 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 34.4`; equals the directory's sha256sums.asc line for kmod-34.4.tar.xz
+    # (fetched separately). The clear-signed file and .tar.sign were NOT
+    # verified; pinned, not built.
+    "34.4" = "4c7942dda4793d08f975270322db582c9701438afd4d76ed9e6e7cf4094cb967"
   }
 }
 

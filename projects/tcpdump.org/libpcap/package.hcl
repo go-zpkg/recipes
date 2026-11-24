@@ -38,6 +38,11 @@ distributable {
 
   sha256 = {
     "1.11.0" = "9237f5bae9dcf3a91823d9963ec43b7c0e2e3374ef2ad57d92c8cd39530f4723"
+
+    # 1.11.1: 751564 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 1.11.1` (one fetch of the stored archive; no signature was checked for
+    # this version).
+    "1.11.1" = "ac3b1ee6c6b3a52f77d530b4b54d08f8adcb9929c2c47ac5bfd3db70e73df6da"
   }
 }
 
