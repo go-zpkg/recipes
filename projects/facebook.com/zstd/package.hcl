@@ -69,6 +69,12 @@ distributable {
   # confirmed by an independent `curl` + `shasum -a 256` giving the same value.
   sha256 = {
     "1.5.7" = "eb33e51f49a15e023950cd7825ca74a4a2b43db8354825ac24fc1b7ee09e6fa3"
+
+    # 1.6.0: 2564432 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 1.6.0` (one fetch of the stored release asset; its .sig has no published
+    # trust anchor, as above). Pinned, not built: the three probes below were
+    # read at 1.5.7.
+    "1.6.0" = "2ba599ae2a257976278e7e71e998433a387bfd18aa7b78678229fd5d84f5e9b8"
   }
 
   # ⛔⛔ A SIGNATURE IS PUBLISHED AND IS DELIBERATELY NOT USED, which is the

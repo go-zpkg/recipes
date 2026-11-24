@@ -53,6 +53,10 @@ distributable {
   # identical. See provenance.note for what that does and does not prove.
   sha256 = {
     "1.31.8.1" = "b569c63b420f80a4ac8466f2deffe73ed93ab760026532e039c3658409a997f4"
+
+    # 1.31.9.1: 6767570 bytes, recorded 2026-11-24 with `zpkb sourcepin
+    # --version 1.31.9.1` (one fetch; the .asc signature was not verified).
+    "1.31.9.1" = "71d49935bdc186dafc1f4b0a8ba44dba1bf4abc8ca52d4621f2039ec8fdcc95f"
   }
 }
 
