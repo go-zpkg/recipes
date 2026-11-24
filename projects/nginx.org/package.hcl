@@ -72,6 +72,10 @@ distributable {
   # so this chain does not survive nginx.org being compromised.
   sha256 = {
     "1.31.9" = "a11c5eeee2e257f4478f0e649f84b0040787d277d2d3e5233952aa6b6dcb80ad"
+
+    # 1.31.10: 1388715 bytes, recorded 2026-11-24 with `zpkb sourcepin
+    # --version 1.31.10` (one fetch; the .asc signature was not verified).
+    "1.31.10" = "a9b690957fca84abdae8a9b52d66b1bb459282d7f01fe4b94b498ed8e977bdb3"
   }
 }
 

@@ -53,6 +53,11 @@ distributable {
   # same digest as `zpkb sourcepin --version 2.11.1`.
   sha256 = {
     "2.11.1" = "b81aee386d797c06d2c9aad62e526e6d8458eb1873bb8c3928cfe45d0c7a8ae3"
+
+    # 2.11.2: 1724861 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 2.11.2` (one fetch; generated tag archive, nothing published to compare
+    # it with). The shards below were not re-read against 2.11.2.
+    "2.11.2" = "9e0ad4d09001acb7021aa2c550f1859574b543cb298771eac8e24a1e29eabe2a"
   }
 }
 

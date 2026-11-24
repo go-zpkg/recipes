@@ -36,6 +36,11 @@ distributable {
     "0.19.0" = "2da079033cd19fd8e2a09f56f9a7d9d1a72d591ff3acdc47d95b920145cf2671"
     # 616256 bytes; curl on the url above, shasum -a 256.
     "0.20.0" = "1957c3ec03866cb0196a4dd038faf11f8f6f14d131d9b4c93c9787762360d23a"
+
+    # 0.20.1: 616022 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 0.20.1` (one fetch; GitHub's generated archive, no checksum file or
+    # signature published, so no second witness).
+    "0.20.1" = "1568b19b3e9bcf911986670dbf92264100974319ddde0b1ccaeecfa82b953632"
   }
 }
 

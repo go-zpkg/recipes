@@ -42,6 +42,11 @@ distributable {
   # second, independent fetch: curl on the same URL, shasum -a 256.
   sha256 = {
     "0.46.0" = "2dfa237fea447f3cc98954e81b0097b9d25841010036720e11f67880fe7861f0"
+
+    # 0.46.1: 33541226 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 0.46.1` (one fetch; GitHub's generated archive, nothing published to
+    # compare it with).
+    "0.46.1" = "f512621f3f54970ba46fc736e0f6581a438db9da1e5c3a8b69b314296f938a80"
   }
 }
 
