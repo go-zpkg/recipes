@@ -43,6 +43,15 @@ distributable {
   # 3177444 bytes, recorded with `zpkb sourcepin --version 2.15.4`.
   sha256 = {
     "2.15.4" = "98087fd181d9070724f3fbc65c7377db03038eb92bd882374daff44940138821"
+
+    # 2.13.9: 2426164 bytes, recorded with `zpkb sourcepin --version 2.13.9` and
+    # equal to the digest GNOME publishes beside it:
+    #   https://download.gnome.org/sources/libxml2/2.13/libxml2-2.13.9.sha256sum
+    # A dependent of this project asks for the 2.13 series, so a build resolves
+    # it, and the pin for 2.15.4 alone refused it. Only the source digest is
+    # recorded here: the configure switches below were read at 2.15.4 and not
+    # re-read against 2.13.
+    "2.13.9" = "a2c9ae7b770da34860050c309f903221c67830c86e4a7e760692b803df95143a"
   }
 
   # ⛔ NO SIGNATURE IS PUBLISHED AT ALL — a third shape, and the weakest rung so
