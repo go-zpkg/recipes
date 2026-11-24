@@ -147,8 +147,23 @@ the container's tpm2-tss 4.0.1, openssl and curl; every test line passed there.
 Against the pantry's own tpm2-tss 4.2.2 it has not been built: that recipe is
 itself marked "NOT BUILT".
 
-⚠ The release is signed (tpm2-tools-5.8.tar.gz.asc exists) and the signature was
-NOT verified here; the digest is the one computed from my download.
+SIGNATURE VERIFIED, with a pinned key (2026-11-24), by
+`zpkb sourcepin --version 5.8 --sig auto --key <key.asc> --fingerprint
+"D533 275B 0123 D0A6 79F5 1FF4 8F4F 9A45 D7FF EE74"`: VALID, made by
+D533275B0123D0A679F51FF48F4F9A45D7FFEE74 (Andreas Fuchs
+<andreas.fuchs@infineon.com>) on 2026-07-15, against a key file and no
+keyserver; the digest it printed is the one above.
+  signature  https://github.com/tpm2-software/tpm2-tools/releases/download/5.8/tpm2-tools-5.8.tar.gz.asc
+  key        https://keys.openpgp.org/vks/v1/by-fingerprint/D533275B0123D0A679F51FF48F4F9A45D7FFEE74
+  fingerprint came from: docs/RELEASE.md INSIDE the 5.8 tarball (the project's
+  own table of release signing keys, row `andreas-fuchs-pub`), not from the
+  keyserver that served the key file.
+The check fails on a tampered file: the same key and signature, run through gpg
+in a throwaway keyring, give "Good signature" for the tarball (exit 0) and
+"BAD signature" for the tarball with one byte appended (exit 1). At build time
+the sha256 above is the durable pin (a changed tarball is refused by the
+builder); the signature's job is to justify having WRITTEN that digest.
+Re-run the sourcepin command above when bumping the version.
 
 ⚠ The `rc` decoder strings in the test come from the TSS error tables of the
 tpm2-tss that the tools link; a tpm2-tss that rewords them would fail the test
