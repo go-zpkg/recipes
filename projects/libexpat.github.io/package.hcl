@@ -34,6 +34,11 @@ distributable {
   # by an independent `curl` + `shasum -a 256` giving the same value.
   sha256 = {
     "2.10.0" = "c624ba2998fc65df1163a49641ff3f9ab73138b11641d92c86bee0fb01b1bc7f"
+
+    # 2.11.0: 559812 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 2.11.0` (one fetch of the stored release asset; signature unanchored, as
+    # explained below).
+    "2.11.0" = "61e7614b602201c28a189dafee78f5bceaee192bbde46a930752ff09cf5542fa"
   }
 
   # ⛔⛔ A SIGNATURE IS PUBLISHED AND CANNOT BE USED — the second project in this

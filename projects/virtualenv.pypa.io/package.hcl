@@ -33,6 +33,10 @@ distributable {
   # index (pypi.org/simple/virtualenv/) records for the sdist.
   sha256 = {
     "21.15.12" = "a3976f886eb6019fcb1d137b223d160adaeff524ab0ad785c729a43c31cc158c"
+
+    # 21.15.13: 5735175 bytes, recorded 2026-11-24 with `zpkb sourcepin
+    # --version 21.15.13` (one fetch; not compared with PyPI's index).
+    "21.15.13" = "f3ad23551343034e613f9c4d8279f282958a19729f5fc2bcb758afcf95fe3a01"
   }
 }
 

@@ -24,6 +24,10 @@ distributable {
   # index (pypi.org/simple/tomlkit/) records for the sdist.
   sha256 = {
     "0.15.2" = "83e32755ba1d20d9340bd069ee97e9f6232ba2346b63ffcba425de01f7e327a6"
+
+    # 0.15.3: 204435 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 0.15.3` (one fetch; not compared with PyPI's index for this version).
+    "0.15.3" = "b3c3020ec1a4bd469d12e31fb4da938e7f6ba758cdbec3fd9047db63120eaf81"
   }
 }
 

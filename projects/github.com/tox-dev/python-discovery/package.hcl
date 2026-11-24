@@ -26,6 +26,10 @@ distributable {
   # index (pypi.org/simple/python-discovery/) records for the sdist.
   sha256 = {
     "1.9.6" = "383aa67858d73a9585a843a37a4383c6be98e4d86a981a031328e393a6eb2632"
+
+    # 1.9.7: 148580 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 1.9.7`; equals the sdist's sha256 in pypi.org/pypi/python-discovery/1.9.7/json.
+    "1.9.7" = "cea89e8a8b86e19731c67f8393f34eb1a2f96c9f97f3e406929a99c646a2358d"
   }
 }
 

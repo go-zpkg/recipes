@@ -39,6 +39,10 @@ distributable {
   # Every asset also has a .sigstore bundle beside it; the Sigstore bundles
   # were NOT verified (that needs cosign).
   sha256 = {
+    # 29.1.3: 106930208 bytes, recorded 2026-11-24 with `zpkb sourcepin
+    # --version 29.1.3`; equals line 3 of the release's own SHA256.txt
+    # (otp_src_29.1.3.tar.gz). Sigstore bundle not verified.
+    "29.1.3"    = "44d8ee7f0964537ddb328fe2f6307d3338c3fdd1b2826938d490907771ba70d2"
     "29.1.2"    = "c79966661e35fe4aff8ec003db63682e3b33b10b672220d51bf93c0a9244b049"
     "28.5.0.8"  = "8a696e15bcbe5d57197b1f4c03c92d415f9fd9af70f9222a05911c8a5463cba6"
     "27.3.4.19" = "866307e64e245e86bee15b3807030a998e59873d7480d6fae1e40b432a3d12b7"

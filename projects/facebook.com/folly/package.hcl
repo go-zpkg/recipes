@@ -43,6 +43,11 @@ distributable {
   # shasum gave the same digest (same GitHub generator: a check on the transfer).
   sha256 = {
     "2026.10.26.00" = "b47fe04b804adfb51c65cda6b171505e67b9d1d69621106e54697821d1bf7ebc"
+
+    # 2026.11.23.00: 5920550 bytes, recorded 2026-11-24 with `zpkb sourcepin
+    # --version 2026.11.23.00` (one fetch; generated tag archive, pinned not
+    # built; the other six stack members are still at 2026.10.26.00).
+    "2026.11.23.00" = "44946e05dbeb6cf1d74ff590c76586e87de54fdf7e045388341b5755af8edb0b"
   }
 }
 
