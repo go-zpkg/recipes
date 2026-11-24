@@ -115,6 +115,11 @@ distributable {
     # 2.7.8`; equals line 1 of the release's SHA256SUMS. The release signature
     # was NOT verified for this pin; pinned, not built.
     "2.7.8"  = "88d80ba91c8f89251cdbef92b4cac598e87ee782a9467eff47715aeac92d6d86"
+
+    # 2.7.9: 1895890 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
+    # 2.7.9`. The release signature was NOT verified for this pin; pinned, not
+    # built. Added because main's `--check-newest-pinned` step was red on it.
+    "2.7.9"  = "eda7d158abe845c49956554488a0749a637891124824a77ab16dadbe0ce58eb7"
   }
 
   # ⛔ NO `sha` FIELD. `sha` means "where the expected SHA-256 is PUBLISHED", a
