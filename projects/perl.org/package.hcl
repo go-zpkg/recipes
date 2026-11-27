@@ -180,11 +180,20 @@ build {
   # the declared libxcrypt, darwin this build's own prefix, which holds nothing
   # at configure time. ⚠ An empty value was not used, because whether
   # Configure treats empty as "unset, use the default" was not checked.
+  # ⛔ AND ON LINUX THE LIBRARY SEARCH LIST MUST NAME THE C LIBRARY'S OWN
+  # DIRECTORY. Seed pass 1 (go-zpkg/packages run 45974130034, perl.org 5.44.0):
+  # Configure printed `What libraries to use? [-lcrypt]` — no -lm — because
+  # -Dloclibpth replaces the default list and the glibc prefix's libm lives in
+  # `lib/glibc-2.44/` (the builder exports it as $ZPKB_GLIBC_LIB), a directory
+  # the list built from the compiler's search dirs does not hold. The link then
+  # died on `undefined symbol: fmod/pow/sin/…` (miniperl, makefile:390). The
+  # published 5.44.0 (perllibs `-lpthread -ldl -lm -lcrypt -lutil -lc`) was
+  # built before that layout.
   script = [
     {
       if = "linux"
       run = [
-        "sh Configure -des -Dprefix=\"{{prefix}}\" -Duserelocatableinc -Dnoextensions='GDBM_File DB_File NDBM_File ODBM_File' -Dlocincpth=\"{{deps.github.com/besser82/libxcrypt.prefix}}/include\" -Dloclibpth=\"{{deps.github.com/besser82/libxcrypt.prefix}}/lib\"",
+        "sh Configure -des -Dprefix=\"{{prefix}}\" -Duserelocatableinc -Dnoextensions='GDBM_File DB_File NDBM_File ODBM_File' -Dlocincpth=\"{{deps.github.com/besser82/libxcrypt.prefix}}/include\" -Dloclibpth=\"{{deps.github.com/besser82/libxcrypt.prefix}}/lib $ZPKB_GLIBC_LIB\"",
       ]
     },
     {
