@@ -120,6 +120,13 @@ distributable {
     # 2.7.9`. The release signature was NOT verified for this pin; pinned, not
     # built. Added because main's `--check-newest-pinned` step was red on it.
     "2.7.9"  = "eda7d158abe845c49956554488a0749a637891124824a77ab16dadbe0ce58eb7"
+
+    # 2.7.11: 1900518 bytes, recorded 2026-11-27 with `zpkb sourcepin --sig auto
+    # --key flex-release-key.asc --fingerprint "56D6 64C7 0CC2 364C F516 4914
+    # B7DF E8BB 6C24 1FED"`: signed by the primary above, 2026-11-27T10:57:02Z,
+    # verified with that release's flex-release-key.asc (fingerprint's second
+    # host: flexlexer.org/downloads). Pinned, not built.
+    "2.7.11" = "99a3ede5f61b63bef3136c5cae16d0f453e8d887c18ddc9e50bb01a4db561ace"
   }
 
   # ⛔ NO `sha` FIELD. `sha` means "where the expected SHA-256 is PUBLISHED", a

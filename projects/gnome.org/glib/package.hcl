@@ -68,6 +68,11 @@ distributable {
   # single-host rung, stated.
   sha256 = {
     "2.90.1" = "93c941aa17d5eb1d53fe838365f29a8b4e539c222a256d974ec8f30fc413e396"
+
+    # 2.90.2: 5880164 bytes, recorded 2026-11-27 with `zpkb sourcepin --version
+    # 2.90.2`. Same single-host rung as 2.90.1 above: no signature published;
+    # the upstream .sha256sum was NOT cross-checked for this pin.
+    "2.90.2" = "edf473b4f5ee70a31d2410622ee605dc4a2c8c46dbc0ec53c9abbaf3960232fd"
   }
 }
 

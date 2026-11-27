@@ -67,6 +67,10 @@ distributable {
   # verified, see provenance.note).
   sha256 = {
     "4.2.2" = "bd4efc89ee01aca8ff771cae268d84333b7594c2d4afee50bb13b859f1113c3f"
+
+    # 4.2.3: 1937134 bytes, recorded 2026-11-27 with `zpkb sourcepin --sig auto`;
+    # signature verified (see provenance.note, "4.2.3 ADDED").
+    "4.2.3" = "8c383fca3ccc1c37c4103ecc7b10e8bfad5663bd4968237d02e9fd8367c8dae5"
   }
 }
 
@@ -174,6 +178,18 @@ provenance {
   identity   Moritz Buhl <moritz.buhl@infineon.com>
   key from   keyserver.ubuntu.com, verified by `zpkb sourcepin --sig auto --key
              <file> --fingerprint DF469492…B54E` against that file.
+
+4.2.3 ADDED 2026-11-27: signature https://github.com/tpm2-software/tpm2-tss/
+releases/download/4.2.3/tpm2-tss-4.2.3.tar.gz.asc, verified by `zpkb sourcepin
+--sig auto` against key 7A8F470DA9C8B2CACED1DBAAF1B152D9441A2563 (Juergen Repp
+<juergen_repp@web.de>), signed 2026-11-27T13:57:38Z, key fetched by id from
+keys.openpgp.org. A DIFFERENT SIGNER than 4.2.2 (Moritz Buhl). SECOND SOURCE:
+the repository's annotated tag `juergen-repp-pub` ("Signing key for maintainer
+juergen_repp@web.de") points at a blob (4ca9932d…) holding the project-published
+key; `zpkb sourcepin --sig auto --key <that blob> --fingerprint 7A8F470D…2563`
+verified the same signature. So for this signer the fingerprint is
+project-published; the caveat below concerns Moritz Buhl's 4.2.2 key. Pinned,
+not built.
 
 ⚠ THE FINGERPRINT IS NOT NAMED BY THE PROJECT. The signature's own issuer
 fingerprint was used, and the trust placed in it rests on the key's user ID and
