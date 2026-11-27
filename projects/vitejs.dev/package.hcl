@@ -49,6 +49,11 @@ distributable {
   # release `zpkb versions` resolves.
   sha256 = {
     "8.3.8" = "96b14ea41f889b70b1ccf74dd5861e365816fce8632c5073ce8d70c90509738b"
+
+    # 8.4.0: 619762 bytes, recorded 2026-11-27 with `zpkb sourcepin --version
+    # 8.4.0`. The registry's dist.shasum / signatures were NOT checked for this
+    # pin; single fetch from one host.
+    "8.4.0" = "db2e7150615e404440c73407bf5d01764e572beeb71367c9ff96d97b84578953"
   }
 }
 

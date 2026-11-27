@@ -26,6 +26,11 @@ distributable {
 
   sha256 = {
     "2.2.0" = "1a1ab8209b35586fbc1aa279ba76d102130b95badcb20ca329587219112d8c16"
+
+    # 2.3.0: 42214740 bytes, recorded 2026-11-27 with `zpkb sourcepin --version
+    # 2.3.0`. The release's hdf5-2.3.0.sha256sums.txt was NOT cross-checked for
+    # this pin; no detached signature is published.
+    "2.3.0" = "cd462ef0578927ae75f9e010a806b0dd28f19152db2abf6919cb94f9d5b9b8b0"
   }
 }
 

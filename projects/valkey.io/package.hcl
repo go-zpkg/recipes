@@ -57,6 +57,11 @@ distributable {
   # the 9.2.0 tag, no signature, fetched twice independently with the same digest.
   sha256 = {
     "9.2.0" = "a02cb44db1269b699629e419d4949e6e51e984b1f0e9a984e8ee1e1b3b7cc36f"
+
+    # 9.2.1: 5224638 bytes, recorded 2026-11-27 with `zpkb sourcepin --version
+    # 9.2.1`. Same single-host chain as 9.2.0 (GitHub's generated archive, no
+    # signature); fetched once.
+    "9.2.1" = "fec5d34ac6f5c7f35cddcaae368734d8a789f1af2f7c29853e790f093d848d71"
   }
 }
 

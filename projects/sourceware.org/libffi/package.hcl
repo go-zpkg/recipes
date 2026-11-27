@@ -31,6 +31,11 @@ distributable {
   # 1650946 bytes, measured on the fetched asset.
   sha256 = {
     "3.8.1" = "81e879c094cc5ec3186c48510c6385ac6b3e866192e8bc71a35245703757ee40"
+
+    # 3.8.2: 1676680 bytes, recorded 2026-11-27 with `zpkb sourcepin --version
+    # 3.8.2`. Same weakest rung as 3.8.1 (see below): no signature, no
+    # published checksum; a single fetch.
+    "3.8.2" = "a699fda2b090c4b46cb79cf60c4dacfce480eb05742c0de66acf3af174a47f92"
   }
 
   # ⛔⛔ THE WEAKEST PROVENANCE OF THE NINE, AND THE ONLY ONE WHERE THE TARBALL
