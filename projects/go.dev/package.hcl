@@ -148,6 +148,11 @@ EOT
     {
       run = <<EOT
 set -eu
+# ⛔ The staging prefix does not exist when this step starts: seed pass 1
+# (go-zpkg/packages run 45974130034, job log 43826) died on
+# `cp: cannot create directory '/zpkg/go.dev/v1.27.4-…+builddir/'` after a
+# complete make.bash. Every `cp` below only creates the leaf, so make it first.
+mkdir -p "{{prefix}}"
 # What the project's own binary release ships at its top level (read from
 # go1.26.11.linux-amd64.tar.gz): api bin doc lib misc pkg src test go.env
 # VERSION and the licence and README files. VERSION matters: it is what the

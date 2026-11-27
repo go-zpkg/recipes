@@ -76,6 +76,16 @@ build {
       # requirement without touching the installed library.
       "--disable-valgrind",
 
+      # ⛔ `--disable-werror`: upstream builds with -Wall -Wextra … -Werror, and
+      # lib/crypt-sm3-yescrypt.c:139 and crypt-gost-yescrypt.c fail with
+      # -Wincompatible-pointer-types-discards-qualifiers (a `const char *`
+      # assigned to a `char *`; consistent with a const-preserving strchr() in
+      # the 2.44 headers, which was not checked). Seen in go-zpkg/packages run 45974130034 (seed
+      # pass 1), libxcrypt 4.5.2. The option is build-aux/m4/zw_simple_warnings.m4:36-44;
+      # it changes no code the library compiles, only whether a warning stops
+      # the build.
+      "--disable-werror",
+
       # ⛔⛔ `--disable-failure-tokens` IS NOT PASSED, AND UPSTREAM'S OWN HELP
       # SAYS WHY. configure:1535-1543:
       #
