@@ -102,6 +102,12 @@ distributable {
   # for byte what shasum computed.
   sha256 = {
     "1.100.0" = "90dab90b8084eb57c35ae2b1d0b70c8e5138ace6023b22c60a5a400f586f63b2"
+
+    # 1.100.1: 263344852 bytes. SIGNED, AND VERIFIED with `zpkb sourcepin -sig
+    # auto` against rust-key.gpg.ascii, fingerprint
+    # 108F66205EAEB0AAA8DD5E1C85AB96E6FA1BE5FE (signature made 2026-11-27), and
+    # equal to the project's own rustc-1.100.1-src.tar.xz.sha256.
+    "1.100.1" = "0478d9d8c0e462dfc51bc277c77dab80de8f93d83a39ad8f258bf92e6678a5ad"
   }
 }
 
@@ -270,12 +276,12 @@ done
 V="$("$R" -vV)"
 echo "$V"
 case "$V" in
-  *"rustc 1.100.0"*) ;;
-  *) echo "not rustc 1.100.0" >&2; exit 1 ;;
+  *"rustc {{version.raw}}"*) ;;
+  *) echo "not rustc {{version.raw}}" >&2; exit 1 ;;
 esac
 case "$V" in
-  *"release: 1.100.0"*) ;;
-  *) echo "release is not 1.100.0 (a dev or beta channel?)" >&2; exit 1 ;;
+  *"release: {{version.raw}}"*) ;;
+  *) echo "release is not {{version.raw}} (a dev or beta channel?)" >&2; exit 1 ;;
 esac
 
 # The LLVM it reports is the external one's.
