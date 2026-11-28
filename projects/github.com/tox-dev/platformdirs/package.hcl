@@ -26,6 +26,10 @@ distributable {
   # index (pypi.org/simple/platformdirs/) records for the sdist.
   sha256 = {
     "4.14.8" = "96893d686e84e9e6f358a9ea41a8de544df66dbf2ba6cda250e7dc73acf85b9b"
+
+    # 4.14.9: 87729 bytes, recorded 2026-11-28 with `zpkb sourcepin --version
+    # 4.14.9`; equals the sdist's sha256 in pypi.org/pypi/platformdirs/4.14.9/json.
+    "4.14.9" = "c6b188e03ffd4dfe1bf8c4bcb47cd94711af244a9852dbff60297bd753684d5d"
   }
 }
 

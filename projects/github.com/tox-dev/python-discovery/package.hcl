@@ -30,6 +30,10 @@ distributable {
     # 1.9.7: 148580 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
     # 1.9.7`; equals the sdist's sha256 in pypi.org/pypi/python-discovery/1.9.7/json.
     "1.9.7" = "cea89e8a8b86e19731c67f8393f34eb1a2f96c9f97f3e406929a99c646a2358d"
+
+    # 1.9.8: 148880 bytes, recorded 2026-11-28 with `zpkb sourcepin --version
+    # 1.9.8`; equals the sdist's sha256 in pypi.org/pypi/python-discovery/1.9.8/json.
+    "1.9.8" = "5d66dd004e6972687438a799fa0895b7a900c1b7324a525196f1826bf7cebb03"
   }
 }
 

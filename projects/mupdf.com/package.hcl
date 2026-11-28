@@ -74,6 +74,11 @@ distributable {
 
   sha256 = {
     "1.28.6" = "dc85000640a45d90ca9b77b061f6ca67cce0c4d4fbecf8819647baf573eef101"
+
+    # 1.28.7: 68932685 bytes, recorded 2026-11-28 with `zpkb sourcepin`; equals
+    # the SHA256 of mupdf.com/releases for mupdf-1.28.7-source.tar.gz and the
+    # `stable` checksum of Homebrew's formula API (formulae.brew.sh, mupdf).
+    "1.28.7" = "4052527c5064dc15033f8c2d842665afd409be520c9f52945ef703e5dec9d3ea"
   }
 }
 
