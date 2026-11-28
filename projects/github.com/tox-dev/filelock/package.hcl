@@ -30,6 +30,10 @@ distributable {
     # 4.3.1: 742330 bytes, recorded 2026-11-24 with `zpkb sourcepin --version
     # 4.3.1` (one fetch; not compared with PyPI's index for this version).
     "4.3.1" = "4c5ee627c401f1863ac6a0de9a14a28d3bb5f8c730b45e2fd6e5dbc79cf34b9e"
+
+    # 4.3.2: 744182 bytes, recorded 2026-11-28 with `zpkb sourcepin --version
+    # 4.3.2`; equals the sdist's sha256 in pypi.org/pypi/filelock/4.3.2/json.
+    "4.3.2" = "4f0a21c70447782453c06bb20a9863ee385ead1abaef22049af79289496851b3"
   }
 }
 

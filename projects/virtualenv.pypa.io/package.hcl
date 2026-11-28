@@ -37,6 +37,10 @@ distributable {
     # 21.15.13: 5735175 bytes, recorded 2026-11-24 with `zpkb sourcepin
     # --version 21.15.13` (one fetch; not compared with PyPI's index).
     "21.15.13" = "f3ad23551343034e613f9c4d8279f282958a19729f5fc2bcb758afcf95fe3a01"
+
+    # 21.15.14: 5737917 bytes, recorded 2026-11-28 with `zpkb sourcepin --version
+    # 21.15.14`; equals the sdist's sha256 in pypi.org/pypi/virtualenv/21.15.14/json.
+    "21.15.14" = "6c6e7aaf88064767c75c32a9df92eaa425cee5db4cc21caf031a78d89375d57f"
   }
 }
 

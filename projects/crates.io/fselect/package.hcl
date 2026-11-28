@@ -36,6 +36,10 @@ distributable {
   # second, independent fetch: curl on the same URL, shasum -a 256.
   sha256 = {
     "0.10.4" = "cbcfba22855b92363fe39722559d649f803bf7acb9a433f54d92f290df006fec"
+
+    # 0.10.5: 434758 bytes, recorded 2026-11-28 with `zpkb sourcepin`, and
+    # confirmed by a second host: codeload.github.com served the same digest.
+    "0.10.5" = "6bce95ce28acbba074c36911d176c0a38b6799010653afa1abc35084bad642b0"
   }
 }
 
@@ -127,7 +131,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # src/main.rs:89-91, :333-336: "fselect <CARGO_PKG_VERSION>" first.
 OUT="$("$F" --version)"
 case "$OUT" in
-  "fselect 0.10.4"*) ;;
+  "fselect {{version.raw}}"*) ;;
   *) echo "--version printed '$OUT'" >&2; exit 1 ;;
 esac
 
