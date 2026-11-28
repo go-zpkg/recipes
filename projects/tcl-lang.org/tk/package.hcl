@@ -95,10 +95,12 @@ dependencies = {
   # Tk finds tclConfig.sh through --with-tcl, and the two lines need different
   # Tcls. 8.6: tk.pc.in `Requires: tcl >= 8.6`. 9.x: unix/configure.ac:40-41
   # "requires Tcl 9.0+"; tk.pc `Requires: tcl >= 9.0`, read off the scratch
-  # install. The scope overrides the plain key for 9.x (reduceDepMap: plain
-  # keys, then platform, then version scope), and a closure that does not know
-  # the version takes the scope's, so the walks that precede resolution see the
-  # newest line, 9.
+  # install. The scope overrides the plain key for 9.x (artifact.ReduceDepKeys:
+  # plain keys, then platform, then version scope; zpkb's build and artifact's
+  # closure walk both call it). A build reads the scope against the version it
+  # builds. A closure reads it against the published versions its constraints
+  # leave (artifact v0.103.0): rooted at 8.6.18 it asks for tcl ^8, rooted at
+  # ^9 it asks for ^9, and only a range spanning both lines unions the two.
   "tcl-lang.org" = "^8"
   ">=9"          = { "tcl-lang.org" = "^9" }
 
